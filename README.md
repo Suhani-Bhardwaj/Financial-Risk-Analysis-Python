@@ -34,7 +34,7 @@ The main objectives of this project are to:
 
 The project uses the following dataset:
 
-**Barclays Financial Transactional Data - barclays.csv**
+**Barclays_Financial_Transactional_Data.csv**
 
 The dataset contains **800 transaction records and 15 columns**.
 
@@ -221,9 +221,9 @@ Accounts were segmented into:
 
 Percentile-based thresholds were used to create the balance segments.
 
-Output:
+The balance segmentation is also visualized in:
 
-`Output/Balance_Volatility.csv`
+`Images/balance_segments.png`
 
 ---
 
@@ -234,6 +234,10 @@ Transaction volume represents the total monetary value of transactions associate
 Accounts were segmented into Low, Medium, and High transaction-volume groups using percentile-based thresholds.
 
 This helps identify accounts with comparatively high monetary transaction activity.
+
+The transaction-volume segmentation is visualized in:
+
+`Images/transaction_volume_segments.png`
 
 ---
 
@@ -623,11 +627,11 @@ Images/
 # Repository Structure
 
 ```text
-Financial Risk Analysis/
+Financial-Risk-Analysis-Python/
 │
-├── Barclays Financial Transactional Data - barclays.csv
 ├── Barclays_Financial_Risk_Analysis.ipynb
-├── Project Summary.pdf
+├── Barclays_Financial_Transactional_Data.csv
+├── README.md
 │
 ├── Images/
 │   ├── accounttype_transaction_amount.png
