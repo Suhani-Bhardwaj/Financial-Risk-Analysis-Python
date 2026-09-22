@@ -2,11 +2,23 @@
 
 ## Project Overview
 
-This project focuses on analyzing Barclays financial transactional data using Python to understand customer transaction behavior, identify financial risk indicators, build customer profiles, and generate meaningful business insights.
+This project analyzes Barclays financial transactional data using Python to understand transaction behavior, build customer account profiles, identify financial risk indicators, detect unusual transactions, and generate business insights.
 
-The analysis covers data cleaning, transaction analysis, customer segmentation, financial risk identification, anomaly detection, data visualization, and statistical hypothesis testing.
+The analysis covers:
 
-The project uses rule-based and statistical techniques rather than machine learning or deep learning models.
+* Data cleaning and formatting
+* Descriptive transaction analysis
+* Credit and Debit classification
+* Account-level transaction analysis
+* Customer activity segmentation
+* Average balance segmentation
+* Transaction volume segmentation
+* Financial risk identification
+* Anomaly detection using the IQR method
+* Data visualization
+* Statistical hypothesis testing
+
+The project uses **rule-based and statistical techniques** and does not use machine learning or deep learning models.
 
 ---
 
@@ -17,61 +29,71 @@ The main objectives of this project are to:
 * Clean and standardize financial transactional data.
 * Analyze monthly and yearly transaction patterns.
 * Classify transactions into Credit and Debit categories.
-* Identify top-performing and bottom-performing accounts based on net inflow.
+* Identify top and bottom accounts based on the project's transaction-value metric.
 * Detect dormant or inactive accounts.
-* Segment customers based on activity, account balance, and transaction volume.
-* Identify accounts with financial risk indicators.
-* Detect frequent large withdrawals and overdraft accounts.
+* Segment accounts based on transaction frequency.
+* Segment accounts based on average account balance.
+* Segment accounts based on transaction volume.
+* Identify high transaction-value accounts.
+* Identify high-frequency low-balance accounts.
+* Identify accounts with negative balances.
+* Detect frequent large withdrawals.
+* Identify overdraft transactions.
 * Measure account balance volatility.
 * Detect unusual transaction amounts using the IQR method.
-* Identify accounts showing suspicious transaction behavior.
-* Perform statistical hypothesis testing using an independent t-test and one-way ANOVA.
-* Generate visualizations to communicate financial and customer insights.
+* Identify accounts showing suspicious financial behavior based on multiple risk indicators.
+* Perform an independent t-test and one-way ANOVA.
+* Generate visualizations for transaction behavior and financial risk analysis.
 
 ---
 
-## Dataset
+# Dataset
 
 The project uses the following dataset:
 
-**Barclays_Financial_Transactional_Data.csv**
+**`Barclays_Financial_Transactional_Data.csv`**
 
-The dataset contains **800 transaction records and 15 columns**.
+The dataset contains:
+
+* **800 transaction records**
+* **15 columns**
+* Transaction data covering **January 2023 to June 2024**
 
 ### Main Columns
 
-| Column            | Description                                       |
-| ----------------- | ------------------------------------------------- |
-| TransactionID     | Unique identifier for each transaction            |
-| CustomerID        | Unique customer identifier                        |
-| AccountID         | Unique account identifier                         |
-| AccountType       | Type of customer account                          |
-| TransactionType   | Type of transaction                               |
-| Product           | Financial product associated with the transaction |
-| Firm              | Firm/company information                          |
-| Region            | Geographic region                                 |
-| Manager           | Assigned manager                                  |
-| TransactionDate   | Date of transaction                               |
-| TransactionAmount | Monetary value of the transaction                 |
-| AccountBalance    | Account balance                                   |
-| RiskScore         | Financial risk score                              |
-| CreditRating      | Customer credit rating                            |
-| TenureMonths      | Customer/account tenure in months                 |
+| Column              | Description                                       |
+| ------------------- | ------------------------------------------------- |
+| `TransactionID`     | Unique identifier for each transaction            |
+| `CustomerID`        | Unique customer identifier                        |
+| `AccountID`         | Unique account identifier                         |
+| `AccountType`       | Type of customer account                          |
+| `TransactionType`   | Type of transaction                               |
+| `Product`           | Financial product associated with the transaction |
+| `Firm`              | Firm/company information                          |
+| `Region`            | Geographic region                                 |
+| `Manager`           | Assigned manager                                  |
+| `TransactionDate`   | Date of transaction                               |
+| `TransactionAmount` | Monetary value of the transaction                 |
+| `AccountBalance`    | Account balance                                   |
+| `RiskScore`         | Financial risk score                              |
+| `CreditRating`      | Customer credit rating                            |
+| `TenureMonths`      | Customer/account tenure in months                 |
 
 ---
 
-## Technologies Used
+# Technologies Used
 
 * Python
 * Pandas
 * NumPy
 * Matplotlib
+* Seaborn
 * SciPy
 * Jupyter Notebook
 
 ---
 
-## Project Workflow
+# Project Workflow
 
 The project is divided into six major tasks:
 
@@ -86,9 +108,11 @@ The project is divided into six major tasks:
 
 # Task 1: Data Cleaning and Formatting
 
-The raw financial dataset was first inspected and cleaned before performing further analysis.
+The dataset was first inspected and cleaned before performing the analysis.
 
-### Data Cleaning Steps
+## Data Cleaning Steps
+
+The following steps were performed:
 
 * Displayed the first five records.
 * Checked dataset dimensions.
@@ -97,21 +121,17 @@ The raw financial dataset was first inspected and cleaned before performing furt
 * Generated descriptive statistics.
 * Checked missing values.
 * Checked duplicate records.
-* Removed special characters from financial fields.
-* Converted financial fields into numeric format.
-* Validated and formatted the transaction date column.
-* Standardized account type names.
-* Standardized transaction categories.
+* Removed commas, dollar signs, and extra spaces from financial fields.
+* Converted `TransactionAmount` and `AccountBalance` into numeric format.
+* Converted `TransactionDate` into datetime format.
+* Standardized `AccountType` values using trimming and title case.
+* Standardized `TransactionType` values using trimming and title case.
 
-### Cleaning Outcome
+### Cleaning Output
 
-After cleaning:
+The cleaned dataset was saved as:
 
-* Financial fields were converted into appropriate numeric formats.
-* Transaction dates were converted into datetime format.
-* Account types and transaction categories were standardized.
-* Missing values and duplicate records were checked.
-* A cleaned version of the dataset was generated for further analysis.
+`Output/Cleaned_Barclays_Data.csv`
 
 ---
 
@@ -121,7 +141,7 @@ After cleaning:
 
 The dataset does not directly contain Credit and Debit labels.
 
-Therefore, the following business rule was used throughout the project.
+Therefore, the following business rule was applied throughout the project.
 
 ### Credit Transactions
 
@@ -133,7 +153,11 @@ Therefore, the following business rule was used throughout the project.
 * Payment
 * Transfer
 
-This classification was consistently applied during transaction analysis.
+The resulting `TransactionCategory` column contains:
+
+* Credit
+* Debit
+* Other
 
 ---
 
@@ -141,53 +165,76 @@ This classification was consistently applied during transaction analysis.
 
 The project creates:
 
-* Month and Year columns.
-* Credit transaction summaries.
-* Debit transaction summaries.
-* Monthly net transaction volume.
-* Yearly transaction summaries.
+* Month
+* Year
+* Monthly Credit Summary
+* Monthly Debit Summary
+* Monthly Net Transaction Summary
+* Yearly Transaction Summary
 
-### Net Transaction Volume
+### Net Transaction Formula
 
-**Net Transaction Volume = Total Credits − Total Debits**
+**Net Transaction = Total Credits − Total Debits**
 
-The analysis shows that debit transactions are higher than credit transactions in every month of the analyzed period, resulting in a negative net transaction volume throughout the period.
+The analysis covers **18 months from January 2023 to June 2024**.
+
+Debit transaction amounts were higher than credit transaction amounts in every analyzed month, resulting in a negative monthly net transaction value throughout the period.
+
+### Output Files
+
+* `Output/Monthly_Credit_Summary.csv`
+* `Output/Monthly_Debit_Summary.csv`
+* `Output/Monthly_Transaction_Summary.csv`
+* `Output/Yearly_Transaction_Summary.csv`
 
 ---
 
-## Top Performing Accounts
+## Top Accounts Based on Transaction Value
 
-Accounts were analyzed based on their net inflow.
+The notebook groups transactions by `AccountID` and calculates the **sum of `TransactionAmount`** for each account.
 
-Net inflow was calculated using the transaction amounts associated with each account.
+The 10 accounts with the highest aggregate transaction amount were identified.
 
-Accounts with higher positive net inflows were identified as top-performing accounts based on the project's defined metric.
+The notebook refers to this metric as **net inflow**, although the implementation is based on the total of the transaction amounts rather than a separate Credit-minus-Debit calculation at account level.
 
-Output:
+### Output
 
 `Output/Top_Performing_Accounts.csv`
 
+### Visualization
+
+`Images/top_performing_accounts.png`
+
 ---
 
-## Bottom Performing Accounts
+## Bottom Accounts Based on Transaction Value
 
-Accounts with the lowest net inflow were identified for further monitoring and customer engagement analysis.
+The 10 accounts with the lowest aggregate transaction amount were identified using the same account-level calculation.
 
-Output:
+### Output
 
 `Output/Bottom_Performing_Accounts.csv`
+
+### Visualization
+
+`Images/bottom_performing_accounts.png`
 
 ---
 
 ## Dormant or Inactive Accounts
 
-An account was considered dormant when the gap between two consecutive transactions was:
+An account was considered dormant when the gap between two consecutive transactions for the same account was:
 
 **60 days or more**
 
-This is a project-specific criterion used for the analysis.
+This is a **project-specific criterion** used for this analysis.
 
-Output:
+The analysis identified:
+
+* **317 transaction records** associated with qualifying 60+ day gaps
+* **166 unique accounts** with at least one qualifying gap
+
+### Output
 
 `Output/Dormant_Accounts.csv`
 
@@ -195,11 +242,17 @@ Output:
 
 # Task 3: Customer Profile Building
 
-Customer accounts were segmented using transaction frequency, average balance, and transaction volume.
+The project builds account profiles using:
+
+* Transaction frequency
+* Average account balance
+* Transaction volume
+
+---
 
 ## Customer Activity Levels
 
-Activity levels were defined according to the number of transactions performed by each account.
+Activity levels were defined according to the total number of transactions performed by each account.
 
 | Activity Level  | Criteria                 |
 | --------------- | ------------------------ |
@@ -207,21 +260,27 @@ Activity levels were defined according to the number of transactions performed b
 | Medium Activity | 4–7 transactions         |
 | Low Activity    | Less than 4 transactions |
 
-This segmentation helps identify highly active accounts as well as accounts with lower transaction engagement.
+The dataset contains **193 unique accounts**.
+
+### Visualization
+
+`Images/customer_activity_levels.png`
 
 ---
 
 ## Balance Segmentation
 
-Accounts were segmented into:
+Average account balance was calculated for each account.
+
+Accounts were then divided into three balance segments using the **33rd and 66th percentile thresholds**:
 
 * Low Balance
 * Medium Balance
 * High Balance
 
-Percentile-based thresholds were used to create the balance segments.
+The calculated thresholds were based on the distribution of average account balances.
 
-The balance segmentation is also visualized in:
+### Visualization
 
 `Images/balance_segments.png`
 
@@ -229,23 +288,29 @@ The balance segmentation is also visualized in:
 
 ## Transaction Volume Segmentation
 
-Transaction volume represents the total monetary value of transactions associated with an account during the analysis period.
+Transaction volume was calculated as the **sum of transaction amounts associated with each account** during the analysis period.
 
-Accounts were segmented into Low, Medium, and High transaction-volume groups using percentile-based thresholds.
+Accounts were divided into:
 
-This helps identify accounts with comparatively high monetary transaction activity.
+* Low Volume
+* Medium Volume
+* High Volume
 
-The transaction-volume segmentation is visualized in:
+using the **33rd and 66th percentile thresholds**.
+
+This segmentation identifies accounts with comparatively higher monetary transaction activity.
+
+### Visualization
 
 `Images/transaction_volume_segments.png`
 
 ---
 
-## High Net Inflow Accounts
+## High Transaction-Value Accounts
 
-Accounts with high net inflows were identified as part of the customer profiling analysis.
+The 10 accounts with the highest aggregate transaction amount were identified as high transaction-value accounts.
 
-Output:
+### Output
 
 `Output/High_Net_Inflow_Accounts.csv`
 
@@ -253,26 +318,30 @@ Output:
 
 ## High-Frequency Low-Balance Accounts
 
-Accounts were identified using the following criteria:
+Accounts were identified using both:
 
 * Medium or High Activity
 * Low Balance
 
-These accounts may require additional monitoring or customer engagement.
+These accounts combine relatively high transaction frequency with comparatively low average balances and may require additional monitoring or customer engagement.
 
-Output:
+### Output
 
 `Output/High_Frequency_Low_Balance.csv`
 
 ---
 
-## Negative or Near-Zero Balance Accounts
+## Accounts with Negative or Near-Zero Average Balance
 
-Accounts with negative or near-zero balances were identified for closer financial monitoring.
+The project also checks accounts whose **average account balance is less than or equal to zero**.
 
-Output:
+### Output
 
 `Output/Negative_Balance_Accounts.csv`
+
+For this dataset, the resulting output contains **no accounts** meeting this specific average-balance criterion.
+
+This analysis is separate from the overdraft analysis in Task 4, which checks individual transaction records with negative account balances.
 
 ---
 
@@ -280,35 +349,58 @@ Output:
 
 Several rule-based and statistical techniques were used to identify potential financial risk indicators.
 
+---
+
 ## Frequent Large Withdrawals
 
 A withdrawal was considered large when its transaction amount was greater than or equal to the **75th percentile (Q3)** of all withdrawal transactions.
 
-This data-driven threshold was used instead of an arbitrary monetary threshold.
+The calculated threshold was approximately:
 
-Output:
+**75,853.67**
+
+There were:
+
+* **210 withdrawal transactions**
+* **53 large-withdrawal transactions**
+* **45 unique accounts** associated with those large withdrawals
+
+### Output
 
 `Output/Frequent_Large_Withdrawals.csv`
+
+Accounts with repeated large withdrawals may require additional review as part of financial risk monitoring.
 
 ---
 
 ## Overdraft Accounts
 
-Accounts with a negative account balance were treated as overdraft accounts for this project.
+An overdraft transaction was identified when:
 
-Output:
+**`AccountBalance < 0`**
+
+The dataset contains:
+
+* **14 transaction records**
+* **14 unique accounts**
+
+with negative account balances.
+
+### Output
 
 `Output/Overdraft_Accounts.csv`
+
+Negative account balances may indicate overdraft situations and can be considered for additional financial monitoring.
 
 ---
 
 ## Balance Volatility
 
-Balance volatility was measured using the standard deviation of account balances for each account.
+Balance volatility was measured using the **standard deviation of account balances for each account**.
 
-A higher standard deviation indicates greater fluctuations in account balance over the analyzed transactions.
+A higher standard deviation indicates greater variation in account balance across the available transactions.
 
-Output:
+### Output
 
 `Output/Balance_Volatility.csv`
 
@@ -330,129 +422,118 @@ The **Interquartile Range (IQR)** method was used to identify unusually high or 
 
 **Q3 + 1.5 × IQR**
 
-Transactions falling outside these boundaries were classified as anomalies.
+For this dataset, the calculated boundaries were approximately:
 
-Output:
+* **Lower bound:** -27,901.92
+* **Upper bound:** 135,395.34
+
+Transactions outside these boundaries were classified as anomalies.
+
+The analysis identified:
+
+**7 anomalous transaction records**
+
+### Output
 
 `Output/Transaction_Anomalies.csv`
 
-An anomaly indicates an unusual transaction amount according to the statistical rule. It does not by itself confirm fraud.
+An anomaly represents an unusual transaction amount according to the statistical rule. It does **not** by itself confirm fraud.
 
 ---
 
 ## Suspicious Transaction Behaviour
 
-For this project, an account was classified as showing suspicious transaction behavior if it met **at least one** of the following conditions:
+For this project, an account was classified as suspicious if it met **at least one** of the following conditions:
 
 * Frequent large withdrawals
 * Negative account balance
 * Presence of anomalous transactions
 
-These conditions were combined to create a broader financial risk screening approach.
+These conditions were combined using a set-based approach to create a broader financial risk screening measure.
 
 ### Result
 
-A total of **57 accounts** were identified as suspicious according to the project's defined criteria.
+**57 unique accounts** were identified as suspicious according to the project's defined criteria.
 
-Output:
+### Output
 
 `Output/Suspicious_Accounts.csv`
+
+Suspicious accounts should be interpreted as accounts requiring additional review, not as confirmed fraudulent accounts.
 
 ---
 
 # Task 5: Data Visualization
 
-Several visualizations were created to understand transaction behavior, customer profiles, and financial risk.
+The project includes visualizations covering transaction behavior, account balances, customer segmentation, credit ratings, and financial risk.
 
 ## Visualizations
 
-### 1. Transaction Amount by Account Type
+### 1. Transaction Amount Distribution
 
-File:
-
-`Images/accounttype_transaction_amount.png`
-
-This visualization compares transaction amounts across different account types.
-
-### 2. Account Balance Distribution
-
-File:
-
-`Images/account_balance_distribution.png`
-
-This visualization shows the distribution of account balances.
-
-### 3. Balance Segments
-
-File:
-
-`Images/balance_segments.png`
-
-This visualization shows the distribution of accounts across different balance segments.
-
-### 4. Bottom Performing Accounts
-
-File:
-
-`Images/bottom_performing_accounts.png`
-
-This visualization presents accounts with comparatively lower net inflow.
-
-### 5. Credit Rating Distribution
-
-File:
-
-`Images/credit_rating_distribution.png`
-
-This visualization shows the distribution of customer credit ratings.
-
-### 6. Customer Activity Levels
-
-File:
-
-`Images/customer_activity_levels.png`
-
-This visualization shows the distribution of accounts across High, Medium, and Low activity levels.
-
-### 7. Monthly Credit vs Debit
-
-File:
-
-`Images/monthly_credit_vs_debit.png`
-
-This visualization compares monthly credit and debit transaction trends.
-
-### 8. Risk Score by Region
-
-File:
-
-`Images/riskscore_region.png`
-
-This visualization compares average risk scores across regions.
-
-### 9. Top Performing Accounts
-
-File:
-
-`Images/top_performing_accounts.png`
-
-This visualization presents accounts with comparatively higher net inflow.
-
-### 10. Transaction Amount Distribution
-
-File:
+Shows the distribution of transaction amounts and helps identify the overall range and extreme values.
 
 `Images/transaction_amount_distribution.png`
 
-This visualization shows the distribution of transaction amounts and helps identify unusually high or low values.
+### 2. Account Balance Distribution
 
-### 11. Transaction Volume Segments
+Shows the distribution of account balances across transaction records.
 
-File:
+`Images/account_balance_distribution.png`
+
+### 3. Transaction Amount by Account Type
+
+Compares the **average transaction amount** across different account types.
+
+`Images/accounttype_transaction_amount.png`
+
+### 4. Average Risk Score by Region
+
+Compares average risk scores across different regions.
+
+`Images/riskscore_region.png`
+
+### 5. Credit Rating Distribution
+
+Shows the distribution of credit rating values in the dataset.
+
+`Images/credit_rating_distribution.png`
+
+### 6. Customer Activity Levels
+
+Shows the distribution of accounts across High, Medium, and Low activity levels.
+
+`Images/customer_activity_levels.png`
+
+### 7. Monthly Credit vs Debit Trend
+
+Compares monthly Credit and Debit transaction amounts.
+
+`Images/monthly_credit_vs_debit.png`
+
+### 8. Balance Segmentation
+
+Shows the distribution of accounts across Low, Medium, and High Balance segments.
+
+`Images/balance_segments.png`
+
+### 9. Transaction Volume Segmentation
+
+Shows the distribution of accounts across Low, Medium, and High transaction-volume segments.
 
 `Images/transaction_volume_segments.png`
 
-This visualization shows the distribution of accounts across transaction-volume segments.
+### 10. Top Performing Accounts
+
+Shows the 10 accounts with the highest aggregate transaction amount according to the project's account-level metric.
+
+`Images/top_performing_accounts.png`
+
+### 11. Bottom Performing Accounts
+
+Shows the 10 accounts with the lowest aggregate transaction amount according to the project's account-level metric.
+
+`Images/bottom_performing_accounts.png`
 
 ---
 
@@ -472,7 +553,10 @@ was used.
 
 ### Objective
 
-To compare average account balances between High Transaction Volume and Low Transaction Volume accounts.
+To compare average account balances between:
+
+* High Transaction Volume accounts
+* Low Transaction Volume accounts
 
 ### Null Hypothesis (H₀)
 
@@ -489,7 +573,7 @@ High Transaction Volume accounts have significantly higher average account balan
 
 Since the p-value is greater than 0.05, the null hypothesis was not rejected.
 
-Based on this test and dataset, there was no statistically significant difference in average account balances between the compared transaction-volume groups.
+Based on this dataset and test, there was no statistically significant difference in average account balances between the compared transaction-volume groups.
 
 ---
 
@@ -518,7 +602,7 @@ At least one activity group has a significantly different average account balanc
 
 Since the p-value is greater than 0.05, the null hypothesis was not rejected.
 
-Based on this test and dataset, there was no statistically significant difference in average account balances across the High, Medium, and Low Activity groups.
+Based on this dataset and test, there was no statistically significant difference in average account balances across the High, Medium, and Low Activity groups.
 
 ---
 
@@ -526,62 +610,65 @@ Based on this test and dataset, there was no statistically significant differenc
 
 ## Data Cleaning
 
-* Financial data was cleaned and standardized.
+* Financial transaction data was inspected and cleaned.
 * Financial fields were converted into numeric format.
-* Transaction dates were validated and formatted.
+* Transaction dates were converted to datetime format.
 * Account types and transaction categories were standardized.
 * Missing values and duplicate records were checked.
+* A cleaned dataset was generated.
 
 ## Transaction Analysis
 
-* Monthly and yearly transaction summaries were generated.
+* The dataset contains 800 transaction records.
 * Transactions were classified into Credit and Debit categories.
-* Monthly debit transactions were higher than credit transactions throughout the analyzed period.
-* Top and bottom performing accounts were identified using net inflow.
-* Dormant accounts were identified using the project's 60-day inactivity criterion.
+* Debit transaction amounts were higher than credit transaction amounts in every analyzed month.
+* Monthly and yearly transaction summaries were generated.
+* Top and bottom accounts were identified using the project's aggregate transaction-value calculation.
+* Accounts with transaction gaps of 60 days or more were identified.
 
 ## Customer Profiling
 
+* 193 unique accounts were analyzed.
 * Accounts were classified into High, Medium, and Low Activity groups.
-* Accounts were segmented based on average balance.
-* Accounts were segmented based on transaction volume.
-* High net inflow accounts were identified.
+* Accounts were segmented using average account balance.
+* Accounts were segmented using transaction volume.
+* High transaction-value accounts were identified.
 * High-frequency low-balance accounts were identified.
-* Negative or near-zero balance accounts were identified.
+* Accounts with average balances less than or equal to zero were checked.
 
 ## Financial Risk Analysis
 
-* Frequent large withdrawals were identified using the 75th percentile threshold.
-* Overdraft accounts were identified using negative account balances.
-* Account balance volatility was calculated.
-* Transaction anomalies were detected using the IQR method.
-* 57 accounts were flagged based on the project's combined suspicious-behavior criteria.
+* Large withdrawals were identified using the 75th percentile threshold.
+* 45 accounts were associated with large withdrawal transactions.
+* 14 accounts had negative account-balance transactions.
+* Account balance volatility was calculated using standard deviation.
+* 7 transaction records were identified as IQR-based anomalies.
+* 57 unique accounts were identified through the combined suspicious-account criteria.
 
 ## Statistical Analysis
 
 * An independent t-test was performed.
-* A one-way ANOVA test was performed.
-* Both tests resulted in p-values greater than 0.05.
-* Therefore, the analysis did not find statistically significant differences in average account balances for the tested groups.
+* A one-way ANOVA was performed.
+* Both tests produced p-values greater than 0.05.
+* The analysis did not find statistically significant differences in average account balances for the tested groups.
 
 ---
 
 # Business Recommendations
 
-Based on the analysis, the following areas can be considered for financial monitoring and customer management:
+Based on the analytical results, the project suggests the following areas for financial monitoring and customer management:
 
-* Closely monitor accounts with negative balances.
-* Investigate accounts with repeated large withdrawals.
-* Review anomalous transactions for additional verification.
-* Prioritize accounts showing multiple risk indicators for further investigation.
-* Use customer activity and balance segmentation for targeted banking services.
-* Consider personalized financial products and engagement strategies for high-value customer segments.
+* Monitor accounts with negative account balances.
+* Review accounts associated with repeated large withdrawals.
+* Investigate transactions identified as statistical anomalies.
+* Review accounts showing multiple risk indicators.
+* Use activity and balance segmentation to understand different customer groups.
+* Consider targeted financial products and engagement strategies for high-value customer segments.
+* Use additional verification before treating unusual transactions as potential financial misconduct or fraud.
 
 ---
 
 # Project Outputs
-
-The project generates the following analytical output files.
 
 ## Output Files
 
@@ -629,6 +716,7 @@ Images/
 ```text
 Financial-Risk-Analysis-Python/
 │
+├── .gitattributes
 ├── Barclays_Financial_Risk_Analysis.ipynb
 ├── Barclays_Financial_Transactional_Data.csv
 ├── README.md
@@ -671,12 +759,14 @@ Financial-Risk-Analysis-Python/
 
 * The analysis is based on the available historical dataset.
 * The dataset contains 800 transaction records.
+* The analysis covers January 2023 to June 2024.
 * Risk identification is based on predefined business rules and statistical techniques.
 * The project does not use machine learning or deep learning.
-* The identified suspicious accounts should not be interpreted as confirmed fraudulent accounts.
-* Anomalous transactions indicate statistical unusualness and require further investigation.
+* The suspicious-account classification is a risk-screening approach and does not confirm fraud.
+* IQR-based anomalies indicate unusual transaction amounts according to the statistical rule and require further investigation.
 * The analysis is not a real-time financial monitoring system.
-* The findings are specific to the available dataset and project-defined criteria.
+* The findings are specific to the available dataset and the criteria implemented in the notebook.
+* The project uses a project-defined 60-day transaction-gap criterion for identifying dormant accounts.
 
 ---
 
@@ -684,10 +774,10 @@ Financial-Risk-Analysis-Python/
 
 The project can be extended by:
 
-* Developing a machine learning model for risk prediction.
+* Developing a machine learning model for financial risk prediction.
 * Implementing advanced anomaly detection techniques.
 * Building a real-time transaction monitoring system.
-* Adding interactive dashboards using Power BI or Streamlit.
+* Adding an interactive dashboard using Power BI or Streamlit.
 * Creating automated risk alerts.
 * Incorporating additional customer and transaction features.
 * Using historical labeled cases to develop supervised fraud or risk prediction models.
@@ -699,10 +789,13 @@ The project can be extended by:
 * Python
 * Pandas
 * NumPy
+* Matplotlib
+* Seaborn
+* SciPy
 * Data Cleaning
 * Exploratory Data Analysis
 * Financial Data Analysis
-* Customer Segmentation
+* Account Segmentation
 * Statistical Analysis
 * Hypothesis Testing
 * Independent t-Test
@@ -714,14 +807,14 @@ The project can be extended by:
 
 ---
 
-## Project Type
+# Project Type
 
 **Python Data Analytics & Financial Risk Analysis**
 
-This project demonstrates the use of Python-based data analysis and statistical techniques to transform transactional financial data into customer insights and potential risk indicators.
+This project demonstrates the use of Python-based data analysis, statistical testing, account segmentation, visualization, and rule-based risk screening to transform transactional financial data into customer and financial insights.
 
 ---
 
-## Author
+# Author
 
 **Suhani**
