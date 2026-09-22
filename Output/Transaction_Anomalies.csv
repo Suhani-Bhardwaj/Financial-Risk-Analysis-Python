@@ -1,0 +1,8 @@
+TransactionID,CustomerID,AccountID,AccountType,TransactionType,Product,Firm,Region,Manager,TransactionDate,TransactionAmount,AccountBalance,RiskScore,CreditRating,TenureMonths,Month,Year,TransactionCategory,GapDays
+167,CUST9843,ACC21264,Current,Transfer,Home Loan,Firm C,East,Manager 2,2023-06-20,149404.3302,71076.7765,0.371491156,769,61,2023-06,2023,Debit,126.0
+169,CUST2188,ACC40939,Loan,Payment,Mutual Fund,Firm C,Central,Manager 2,2024-03-12,-29124.62485,70433.48821,0.695775875,594,141,2024-03,2024,Debit,267.0
+12,CUST1121,ACC43309,Credit,Transfer,Savings Account,Firm B,South,Manager 1,2023-10-16,166083.8296,69875.76042,0.708080603,372,230,2023-10,2023,Debit,35.0
+6,CUST2427,ACC80131,Current,Deposit,Mutual Fund,Firm C,South,Manager 1,2023-11-19,141600.74,58800.35045,0.130982112,313,168,2023-11,2023,Credit,11.0
+14,CUST5558,ACC82947,Credit,Payment,Credit Card,Firm A,East,Manager 2,2023-09-26,-43698.75917,124963.7637,0.460876616,433,110,2023-09,2023,Debit,53.0
+190,CUST1738,ACC90887,Savings,Withdrawal,Savings Account,Firm C,East,Manager 2,2024-01-20,-59669.07548,56004.32009,0.226498777,502,172,2024-01,2024,Debit,19.0
+117,CUST3041,ACC95164,Credit,Deposit,Credit Card,Firm A,West,Manager 3,2024-04-06,142081.629,60296.30589,0.368575915,560,104,2024-04,2024,Credit,169.0
